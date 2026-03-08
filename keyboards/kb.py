@@ -30,7 +30,10 @@ class Keyboard:
             return self.cache[ans]
         used_answers = {ans}
         while len(used_answers) < 12:
-            used_answers.add(randint(0, ans + 10))
+            if 10 <= ans <= 99:
+                used_answers.add(randint(10, ans + 12))
+            else:
+                used_answers.add(randint(1, ans + 12))
 
         buttons = [KeyboardButton(text=str(a)) for a in sorted(used_answers)]
 
