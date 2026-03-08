@@ -93,6 +93,7 @@ async def get_top_users(message: Message):
         name = first_name
         text += f"{i}. {name} - {score} ✅\n"
     
+    text = text.replace("1.", "1. 🥇").replace("2.", "2. 🥈").replace("3.", "3. 🥉").replace("4.", "4. 🎉").replace("5.", "5. 🎉")
     place, correctly_solved_examples = await user_db.check_position_of_leaderboard(message.from_user.id)
     text += f"\n\n📊 <b>Твой результат:</b>\n{correctly_solved_examples} ✅ ({place} место)\n"
 
