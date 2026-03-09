@@ -6,14 +6,15 @@ from random import randint
 class Keyboard:
     def __init__(self):
         self.cache = {}
-        self.buttons = [InlineKeyboardButton(text="  Умножение на 2  ", callback_data="x2"),
-                   InlineKeyboardButton(text="  Умножение на 3  ", callback_data="x3"),
-                   InlineKeyboardButton(text="  Умножение на 4  ", callback_data="x4"),
-                   InlineKeyboardButton(text="  Умножение на 5  ", callback_data="x5"),
-                   InlineKeyboardButton(text="  Умножение на 6  ", callback_data="x6"),
-                   InlineKeyboardButton(text="  Умножение на 7  ", callback_data="x7"),
-                   InlineKeyboardButton(text="  Умножение на 8  ", callback_data="x8"),
-                   InlineKeyboardButton(text="  Умножение на 9  ", callback_data="x9")]
+        self.buttons = [InlineKeyboardButton(text="Умножение на 2", callback_data="x2"),
+                   InlineKeyboardButton(text="Умножение на 3", callback_data="x3"),
+                   InlineKeyboardButton(text="Умножение на 4", callback_data="x4"),
+                   InlineKeyboardButton(text="Умножение на 5", callback_data="x5"),
+                   InlineKeyboardButton(text="Умножение на 6", callback_data="x6"),
+                   InlineKeyboardButton(text="Умножение на 7", callback_data="x7"),
+                   InlineKeyboardButton(text="Умножение на 8", callback_data="x8"),
+                   InlineKeyboardButton(text="Умножение на 9", callback_data="x9"),
+                   InlineKeyboardButton(text="Вся таблица", callback_data="all_table")]
     
 
     def multiplicate(self):

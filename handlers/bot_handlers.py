@@ -7,7 +7,7 @@ from collections import defaultdict
 from random import randint, choice
 
 
-from math_examples.creating_examples import generate_examples_and_keyboards
+from math_examples.creating_examples import generate_examples_and_keyboards, generate_examples_and_kb_full_table
 from states_floder.states import MultiplyState
 from database.db import DatabaseBot
 
@@ -31,9 +31,26 @@ async def help(message: Message):
 Основные разделы меню:\n
 🎓 <b>Тренировка</b> - Главный раздел. Выбирай конкретные числа и начинай решать примеры.\n
 📊 <b>Мои достижения</b> - Твоя личная статистика: количество решенных примеров, процент и количество правильных ответов.\n
-🏆 <b>Топ-5 легенд умножения</b> - Список лучших игроков. Решай примеры быстрее всех, чтобы попасть в зал славы и занять почетное место в пятерке лидеров!\n
+🏆 <b>Топ-5 легенд умножения</b> - Список лучших игроков. Решай примеры лучше всех, чтобы попасть в зал славы и занять почетное место в пятерке лидеров!\n
 🆘 <b>Помощь</b> - Как пользоваться ботом.\n
 <b>Совет:</b> чем регулярнее ты тренируешься, тем выше твоя позиция в глобальном рейтинге!''', parse_mode="HTML")
+
+
+@user_router.callback_query(F.data == "all_table")
+async def mul_all_table(callback: CallbackQuery, state: FSMContext):
+    await callback.answer()
+
+    await callback.message.edit_reply_markup(reply_markup=None)
+
+    examples, keyboard_with_answers = await generate_examples_and_kb_full_table(kb_class)
+
+    await state.update_data(examples = examples, current_step = 1, amount_correctly_solved_examples = 0, keyboard_with_answers = keyboard_with_answers)
+
+    num1, num2, ans = examples[0]
+
+    await callback.message.answer(text=f"{num1} × {num2} = ?", reply_markup=keyboard_with_answers[0])
+    await state.set_state(MultiplyState.answering)
+
 
 
 @user_router.callback_query(F.data.startswith("x"))
