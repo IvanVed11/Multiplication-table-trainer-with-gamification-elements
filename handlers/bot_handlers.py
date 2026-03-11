@@ -96,9 +96,9 @@ async def check_and_give_answers(message: Message, state: FSMContext):
         if new_correct_answers in titles:
             new_title = titles[new_correct_answers]
 
-            text = f"<b>ОГО! Система обновлена!</b> 🚀\n\nПоздравляю, твой кибер-интеллект растёт!\n\n"
-            text += f"Ты дал уже <b>{new_correct_answers}</b> правильных ответов и получаешь новое звание: {new_title}.\n\n"
-            text += f"\nПродолжаем прокачку!"
+            text = f"<b>ОГО! Система обновлена!</b> 🚀\n\nПоздравляю, твой кибер-интеллект растёт! 📈\n\n"
+            text += f"Ты дал уже <b>{new_correct_answers}</b> правильных ответов и получаешь новое звание: {new_title}. 💪\n\n"
+            text += f"\nПродолжаем прокачку! ⚡"
             if new_title != current_title:
                 await user_db.update_title(message.from_user.id, titles[amount_correctly_solved_examples])
                 await message.answer(text=text, parse_mode="HTML")
