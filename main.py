@@ -25,7 +25,10 @@ async def main():
     await set_main_menu(bot)
 
     dp.include_router(bot_handlers.user_router)
-    await dp.start_polling(bot)
+    try:
+        await dp.start_polling(bot)
+    finally:
+        await user_db.close_connection()
 
     await user_db.close_connection()
 
