@@ -96,8 +96,9 @@ async def check_and_give_answers(message: Message, state: FSMContext):
         if new_correct_answers in titles:
             new_title = titles[new_correct_answers]
 
-            text = f"Система обновлена! 🚀 Поздравляю, твой кибер-интеллект растёт!"
-            text += f"Ты дал уже {new_correct_answers} правильных ответов и получаешь новое звание: {new_title}"
+            text = f"<b>ОГО! Система обновлена!</b> 🚀\nПоздравляю, твой кибер-интеллект растёт! "
+            text += f"Ты дал уже <b>{new_correct_answers}<\b> правильных ответов и получаешь новое звание: {new_title}."
+            text += f"\nПродолжаем прокачку!"
             if new_title != current_title:
                 await user_db.update_title(message.from_user.id, titles[amount_correctly_solved_examples])
                 await message.answer(text=text)
@@ -140,7 +141,7 @@ async def view_profile(message: Message):
     for row in profile:
         amount_solved_examples, amount_correctly_solved_examples, first_name, current_title = row
     text = f"📊 {first_name}\n\n"
-    text += f"Твой титул: {current_title}\n"
+    text += f"Твое звание: {current_title}\n\n"
     text += f"💪 Решено примеров: {amount_solved_examples}\n"
     text += f"✅ Верных ответов: {amount_correctly_solved_examples}\n"
 
