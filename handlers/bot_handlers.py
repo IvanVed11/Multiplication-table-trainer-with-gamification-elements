@@ -21,7 +21,7 @@ kb_class = Keyboard()
 async def start_bot(message: Message):
     keyboard = kb_class.multiplicate()
     await user_db.add_user(message.from_user.id, message.from_user.username, message.from_user.first_name)
-    await message.answer(text=f"На какое число будем умножать?", reply_markup=keyboard)
+    await message.answer(text=f"Выбери число для умножения", reply_markup=keyboard)
 
 
 @user_router.message(Command(commands="help"))
@@ -115,7 +115,7 @@ async def check_and_give_answers(message: Message, state: FSMContext):
         await message.answer(text=f"{num1} × {num2} = ?", reply_markup=keyboard)
     else:
         await message.answer(f"Тренировка завершена.\nТвой результат:\n✅ Верно: {amount_correct} из 10")
-        await message.answer(text='''🎓 Еще потренируемся? Нажми /start\n
+        await message.answer(text='''Еще потренируемся? Нажми /start\n
 📊 Мои достижения - нажми /profile\n
 🏆 Зал славы - нажми /top\n
 🆘 Помощь - нажми /help''')
