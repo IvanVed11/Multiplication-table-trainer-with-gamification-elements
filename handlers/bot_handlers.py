@@ -125,7 +125,7 @@ async def check_and_give_answers(message: Message, state: FSMContext):
 @user_router.message(Command(commands="top"))
 async def get_top_users(message: Message):
     top_users = await user_db.get_user_stats()
-    text = "🏆 <b>Зал славы<\b>\n\n<b>Топ 5 легенд умножения:</b>\n\n"
+    text = "🏆 <b>Зал славы</b>\n\n<b>Топ 5 легенд умножения:</b>\n\n"
     for i, (first_name, score) in enumerate(top_users, start=1):
         name = first_name
         text += f"{i}. {name} - {score} ✅\n"
