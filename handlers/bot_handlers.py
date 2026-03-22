@@ -21,17 +21,17 @@ kb_class = Keyboard()
 async def start_bot(message: Message):
     keyboard = kb_class.multiplicate()
     await user_db.add_user(message.from_user.id, message.from_user.username, message.from_user.first_name)
-    await message.answer(text=f"Привет, {message.from_user.first_name}! 🎓 С моей помощью ты выучишь таблицу умножения быстро и легко. Давай тренироваться.", reply_markup=keyboard)
+    await message.answer(text=f"На какое число будем умножать?", reply_markup=keyboard)
 
 
 @user_router.message(Command(commands="help"))
 async def help(message: Message):
     await message.answer('''📖 <b>Как пользоваться ботом</b>\n
 Основные разделы меню:\n
-🎓 <b>Тренировка</b> - Главный раздел. Выбирай конкретные числа и начинай решать примеры.\n
-📊 <b>Мои достижения</b> - Твоя личная статистика: количество решенных примеров, процент и количество правильных ответов.\n
-🏆 <b>Зал славы</b> - Список лучших игроков. Решай примеры лучше всех, чтобы попасть в зал славы и занять почетное место в пятерке лидеров!\n
-🆘 <b>Помощь</b> - Как пользоваться ботом.\n
+🎓 <b>Тренировка</b> - главный раздел. Выбирай конкретные числа и начинай решать примеры.\n
+📊 <b>Мои достижения</b> - твоя личная статистика: количество решенных примеров, процент и количество правильных ответов.\n
+🏆 <b>Зал славы</b> - список лучших игроков. Решай примеры лучше всех, чтобы попасть в зал славы и занять почетное место в пятерке лидеров!\n
+🆘 <b>Помощь</b> - как пользоваться ботом.\n
 <b>Совет:</b> чем регулярнее ты тренируешься, тем выше твоя позиция в глобальном рейтинге!''', parse_mode="HTML")
 
 
@@ -78,7 +78,7 @@ async def check_and_give_answers(message: Message, state: FSMContext):
     right_answer = examples[step - 1][2]
 
     if not message.text.isdigit():
-        await message.reply("Выбери ответ в виде цифры.")
+        await message.reply("Выбери ответ в виде числа.")
         return
 
     if int(message.text) == right_answer:
@@ -96,7 +96,7 @@ async def check_and_give_answers(message: Message, state: FSMContext):
         if new_correct_answers in titles:
             new_title = titles[new_correct_answers]
 
-            text = f"<b>ОГО! Система обновлена!</b> 🚀\n\nПоздравляю, твой кибер-интеллект растёт! 📈\n\n"
+            text = f"<b>ОГО! Система обновлена!</b> 🚀\n\nПоздравляю, {first_name}, твой кибер-интеллект растёт! 📈\n\n"
             text += f"Ты дал уже <b>{new_correct_answers}</b> правильных ответов и получаешь новое звание: {new_title}. 💪\n\n"
             text += f"\nПродолжаем прокачку! ⚡"
             if new_title != current_title:
@@ -115,13 +115,17 @@ async def check_and_give_answers(message: Message, state: FSMContext):
         await message.answer(text=f"{num1} × {num2} = ?", reply_markup=keyboard)
     else:
         await message.answer(f"Тренировка завершена.\nТвой результат:\n✅ Верно: {amount_correct} из 10")
+        await message.answer(text='''🎓 Еще потренируемся? Нажми /start\n
+📊 Мои достижения - нажми /profile\n
+🏆 Зал славы - нажми /top\n
+🆘 Помощь - нажми /help''')
         await state.clear()
 
 
 @user_router.message(Command(commands="top"))
 async def get_top_users(message: Message):
     top_users = await user_db.get_user_stats()
-    text = "🏆 <b>Топ 5 легенд умножения:</b>\n\n"
+    text = "🏆 <b>Зал славы<\b>\n\n<b>Топ 5 легенд умножения:</b>\n\n"
     for i, (first_name, score) in enumerate(top_users, start=1):
         name = first_name
         text += f"{i}. {name} - {score} ✅\n"
@@ -140,8 +144,8 @@ async def view_profile(message: Message):
     profile = await user_db.get_profile_statistics(message.from_user.id)
     for row in profile:
         amount_solved_examples, amount_correctly_solved_examples, first_name, current_title = row
-    text = f"📊 {first_name}\n\n"
-    text += f"Твое звание: {current_title}\n\n"
+    text = f"📊 <b>Мои достижения</b>\n\n👤 {first_name}\n\n"
+    text += f"Звание:\n{current_title}\n\n"
     text += f"💪 Решено примеров: {amount_solved_examples}\n"
     text += f"✅ Верных ответов: {amount_correctly_solved_examples}\n"
 
@@ -153,4 +157,4 @@ async def view_profile(message: Message):
     place, correctly_solved_examples = await user_db.check_position_of_leaderboard(message.from_user.id)
     text += f"🏆 Место в рейтинге: {place}"
 
-    await message.answer(text=text)
+    await message.answer(text=text, parse_mode="HTML")

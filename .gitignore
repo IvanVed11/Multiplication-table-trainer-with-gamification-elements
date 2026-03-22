@@ -2,7 +2,7 @@
 
 .idea
 
-database.db
+aiosqlite/database.db
 
 __pycache__/
 *.py[cod]
