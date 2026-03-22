@@ -126,7 +126,7 @@ async def check_and_give_answers(message: Message, state: FSMContext):
         text += f"📊 Мои достижения - нажми /profile\n"
         text += f"🏆 Зал славы - нажми /top\n"
         text += f"🆘 Помощь - нажми /help"
-        await message.answer(text=text)
+        await message.answer(text=text, parse_mode="HTML")
         await state.clear()
 
 
