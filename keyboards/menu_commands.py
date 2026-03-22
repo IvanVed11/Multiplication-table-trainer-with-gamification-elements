@@ -3,7 +3,7 @@ from aiogram.types import BotCommand, BotCommandScopeAllPrivateChats
 
 async def set_main_menu(bot: Bot):
     menu_commands = [
-        BotCommand(command = "start", description="🎓 Тренировка"),
+        BotCommand(command = "start", description="🚀 Тренировка"),
         BotCommand(command = "profile", description="📊 Мои достижения"),
         BotCommand(command = "top", description="🏆 Зал славы"),
         BotCommand(command = "help", description="🆘 Помощь"),

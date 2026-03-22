@@ -29,6 +29,12 @@ class DatabaseBot:
         await self.db.commit()
 
 
+    async def check_is_user_in_db(self, user_id):
+        cursor = await self.db.execute("SELECT 1 FROM Users WHERE id = ?", (user_id,))
+        result = await cursor.fetchone()
+        return result is not None
+
+
     async def update_stats(self, user_id, is_correct_ans):
         if is_correct_ans:
             await self.db.execute('''UPDATE Users SET amount_correctly_solved_examples = amount_correctly_solved_examples + 1 

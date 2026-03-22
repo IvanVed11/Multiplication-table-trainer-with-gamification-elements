@@ -20,15 +20,22 @@ kb_class = Keyboard()
 @user_router.message(CommandStart())
 async def start_bot(message: Message):
     keyboard = kb_class.multiplicate()
-    await user_db.add_user(message.from_user.id, message.from_user.username, message.from_user.first_name)
-    await message.answer(text=f"Выбери число для умножения", reply_markup=keyboard)
+    user_id = message.from_user.id
+    is_registered = await user_db.check_is_user_in_db(user_id)
+
+    if not is_registered:
+        await message.answer(text=f"Привет, {message.from_user.first_name}! 🤗 С моей помощью ты выучишь таблицу умножения быстро и легко. Давай тренироваться. 🚀")
+        await message.answer(text=f"Выбери число для умножения.", reply_markup=keyboard)
+    else:
+        await message.answer(text=f"Выбери число для умножения.", reply_markup=keyboard)
+    await user_db.add_user(user_id, message.from_user.username, message.from_user.first_name)
 
 
 @user_router.message(Command(commands="help"))
 async def help(message: Message):
     await message.answer('''📖 <b>Как пользоваться ботом</b>\n
 Основные разделы меню:\n
-🎓 <b>Тренировка</b> - главный раздел. Выбирай конкретные числа и начинай решать примеры.\n
+🚀 <b>Тренировка</b> - главный раздел. Выбирай конкретные числа и начинай решать примеры.\n
 📊 <b>Мои достижения</b> - твоя личная статистика: количество решенных примеров, процент и количество правильных ответов.\n
 🏆 <b>Зал славы</b> - список лучших игроков. Решай примеры лучше всех, чтобы попасть в зал славы и занять почетное место в пятерке лидеров!\n
 🆘 <b>Помощь</b> - как пользоваться ботом.\n
@@ -96,8 +103,8 @@ async def check_and_give_answers(message: Message, state: FSMContext):
         if new_correct_answers in titles:
             new_title = titles[new_correct_answers]
 
-            text = f"<b>ОГО! Система обновлена!</b> 🚀\n\nПоздравляю, {first_name}, твой кибер-интеллект растёт! 📈\n\n"
-            text += f"Ты дал уже <b>{new_correct_answers}</b> правильных ответов и получаешь новое звание: {new_title}. 💪\n\n"
+            text = f"<b>ОГО! Система обновлена!</b> 🚀\n\nПоздравляю, <b>{first_name}</b>, твой кибер-интеллект растёт! 📈\n\n"
+            text += f"У тебя уже <b>{new_correct_answers}</b> правильных ответов и ты получаешь новое звание: {new_title} 💪\n\n"
             text += f"\nПродолжаем прокачку! ⚡"
             if new_title != current_title:
                 await user_db.update_title(message.from_user.id, titles[amount_correctly_solved_examples])
@@ -114,8 +121,8 @@ async def check_and_give_answers(message: Message, state: FSMContext):
         keyboard = data["keyboard_with_answers"][step - 1]
         await message.answer(text=f"{num1} × {num2} = ?", reply_markup=keyboard)
     else:
-        await message.answer(f"Тренировка завершена.\nТвой результат:\n✅ Верно: {amount_correct} из 10")
-        text = f"{first_name}, еще потренируемся? Нажми /start\n"
+        await message.answer(f"Тренировка завершена. 🎉\nТвой результат:\n✅ Верно: {amount_correct} из 10")
+        text = f"<b>{message.from_user.first_name}</b>, еще потренируемся? 🚀\nНажми /start\n"
         text += f"📊 Мои достижения - нажми /profile\n"
         text += f"🏆 Зал славы - нажми /top\n"
         text += f"🆘 Помощь - нажми /help"
