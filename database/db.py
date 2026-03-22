@@ -9,7 +9,7 @@ class DatabaseBot:
 
     async def connect_with_database(self):
         if self.db is None:
-            self.db = await aiosqlite.connect("aiosqlite/database.db")
+            self.db = await aiosqlite.connect("database.db")
             await self.db.execute('''CREATE TABLE IF NOT EXISTS Users (
             id INTEGER PRIMARY KEY,
             username TEXT,
