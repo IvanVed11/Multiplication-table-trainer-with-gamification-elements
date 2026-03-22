@@ -115,10 +115,11 @@ async def check_and_give_answers(message: Message, state: FSMContext):
         await message.answer(text=f"{num1} × {num2} = ?", reply_markup=keyboard)
     else:
         await message.answer(f"Тренировка завершена.\nТвой результат:\n✅ Верно: {amount_correct} из 10")
-        await message.answer(text='''Еще потренируемся? Нажми /start\n
-📊 Мои достижения - нажми /profile\n
-🏆 Зал славы - нажми /top\n
-🆘 Помощь - нажми /help''')
+        text = f"{first_name}, еще потренируемся? Нажми /start\n"
+        text += f"📊 Мои достижения - нажми /profile\n"
+        text += f"🏆 Зал славы - нажми /top\n"
+        text += f"🆘 Помощь - нажми /help"
+        await message.answer(text=text)
         await state.clear()
 
 
