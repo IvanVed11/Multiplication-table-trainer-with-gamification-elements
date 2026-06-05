@@ -1,7 +1,7 @@
 # 🚀 КиберМножитель
 
 <p align="center">
-  <img src="logo.jpg" alt="Ава бота" width="250">
+  <img src="logo.png" alt="Ава бота" width="250">
 </p>
 
 **Привет!** 🤗
