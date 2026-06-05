@@ -10,16 +10,17 @@ async def generate_examples_and_keyboards(factor, kb_class):
         num = randint(1, 9)
         ans = factor * num
         for example in examples:
-            if example[1] == num:
+            if example[0] == num:
                 counter[num] += 1
         if counter[num] < 2 and not examples: 
-            examples.append([factor, num, ans])
+            examples.append([num, factor, ans])
             keyboard_with_answers.append(kb_class.generate_multiplicate_answers(ans))
-        elif counter[num] < 2 and examples and examples[-1][1] != num: 
-            examples.append([factor, num, ans])
+        elif counter[num] < 2 and examples and examples[-1][0] != num: 
+            examples.append([num, factor, ans])
             keyboard_with_answers.append(kb_class.generate_multiplicate_answers(ans))
 
     return examples, keyboard_with_answers
+
 
 async def generate_examples_and_kb_full_table(kb_class):
     examples = []
